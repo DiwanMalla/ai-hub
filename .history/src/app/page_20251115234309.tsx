@@ -1,23 +1,45 @@
 import Image from "next/image";
-import Link from "next/link";
-import { models, getActiveModels } from "@/config/models";
+import ModelTryPanel from "@/components/ModelTryPanel";
 
 const navLinks = [
   { label: "Models", href: "#models" },
+  { label: "Try Live", href: "#try" },
   { label: "Docs", href: "https://huggingface.co/docs" },
   { label: "Community", href: "https://huggingface.co" },
 ];
 
-export default function Home() {
-  const activeModels = getActiveModels();
+const aiModels = [
+  {
+    id: "rmbg-1.4",
+    name: "BRIA RMBG 1.4",
+    category: "Image Segmentation",
+    description:
+      "Production-grade background removal with enterprise-safe training data",
+    likes: "1.88k",
+    tags: ["Image Segmentation", "Transformers.js", "Browser-Ready"],
+    status: "active",
+    provider: "BRIA AI",
+  },
+  {
+    id: "coming-soon-1",
+    name: "More models coming",
+    category: "Various",
+    description: "Add your favorite Hugging Face models to this collection",
+    likes: "—",
+    tags: ["Placeholder"],
+    status: "placeholder",
+    provider: "Community",
+  },
+];
 
+export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
       {/* Hero Header */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-black/20/80 backdrop-blur-xl">
+      <header className="border-b border-white/10 bg-black/20 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-6 py-6">
           <div className="flex flex-wrap items-center justify-between gap-6">
-            <Link href="/" className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <Image
                 src="/huggingface.svg"
                 alt="Hugging Face"
@@ -34,38 +56,17 @@ export default function Home() {
                   Your curated collection of AI models
                 </p>
               </div>
-            </Link>
-            <nav className="flex items-center gap-3">
-              {/* Desktop links */}
-              <div className="hidden md:flex md:items-center md:gap-3">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 transition hover:border-yellow-400/50 hover:bg-white/10 hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-
-              {/* Mobile: details/summary provides an accessible toggle without client JS */}
-              <details className="md:hidden relative">
-                <summary className="list-none cursor-pointer rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-white/80">
-                  Menu
-                </summary>
-                <div className="absolute right-0 mt-2 w-48 rounded-lg border border-white/10 bg-black/90 p-2 backdrop-blur">
-                  {navLinks.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      className="block rounded-md px-3 py-2 text-sm text-white/80 hover:bg-white/5"
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </details>
+            </div>
+            <nav className="flex flex-wrap gap-3">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 transition hover:border-yellow-400/50 hover:bg-white/10 hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
             </nav>
           </div>
         </div>
@@ -93,15 +94,15 @@ export default function Home() {
             </h2>
             <p className="max-w-2xl text-lg text-white/70">
               Run powerful AI models directly in your browser using
-              Transformers.js. No server setup, no API keys required. Your
-              curated collection of production-ready models.
+              Transformers.js. No server setup, no API keys required. Start with
+              background removal and expand your collection.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="#models"
+                href="#try"
                 className="group inline-flex items-center gap-2 rounded-2xl bg-yellow-400 px-6 py-3 font-semibold text-black shadow-lg shadow-yellow-400/20 transition hover:bg-yellow-300 hover:shadow-xl hover:shadow-yellow-400/30"
               >
-                Explore Models
+                Try RMBG 1.4 Live
                 <svg
                   className="h-5 w-5 transition-transform group-hover:translate-x-1"
                   fill="none"
@@ -117,12 +118,12 @@ export default function Home() {
                 </svg>
               </a>
               <a
-                href="https://huggingface.co/docs/transformers.js"
+                href="https://huggingface.co/briaai/RMBG-1.4"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur transition hover:border-yellow-400/50 hover:bg-white/10"
               >
-                Documentation
+                View Model Card
                 <svg
                   className="h-5 w-5"
                   fill="none"
@@ -155,13 +156,13 @@ export default function Home() {
             <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur">
               <span className="text-white/60">Total: </span>
               <span className="font-semibold text-white">
-                {activeModels.length} active
+                {aiModels.filter((m) => m.status === "active").length} active
               </span>
             </div>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {models.map((model) => (
+            {aiModels.map((model) => (
               <article
                 key={model.id}
                 className={`group relative overflow-hidden rounded-2xl border transition ${
@@ -198,7 +199,7 @@ export default function Home() {
                   </div>
 
                   <div className="mb-4 flex flex-wrap gap-2">
-                    {model.tags.slice(0, 3).map((tag) => (
+                    {model.tags.map((tag) => (
                       <span
                         key={tag}
                         className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70"
@@ -226,8 +227,8 @@ export default function Home() {
                       </span>
                     </div>
                     {model.status === "active" && (
-                      <Link
-                        href={`/models/${model.slug}`}
+                      <a
+                        href="#try"
                         className="inline-flex items-center gap-1 rounded-lg bg-yellow-400/10 px-3 py-1.5 text-sm font-semibold text-yellow-300 transition hover:bg-yellow-400/20"
                       >
                         Try now
@@ -244,13 +245,45 @@ export default function Home() {
                             d="M9 5l7 7-7 7"
                           />
                         </svg>
-                      </Link>
+                      </a>
                     )}
                   </div>
                 </div>
               </article>
             ))}
           </div>
+        </section>
+
+        {/* Live Demo Section */}
+        <section id="try" className="mb-16">
+          <div className="mb-8">
+            <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-400/10 px-4 py-2">
+              <svg
+                className="h-4 w-4 text-purple-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M13 7H7v6h6V7z" />
+                <path
+                  fillRule="evenodd"
+                  d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="text-sm font-semibold text-purple-300">
+                Interactive Playground • Powered by Transformers.js
+              </span>
+            </div>
+            <h3 className="text-3xl font-bold text-white">
+              Try BRIA RMBG 1.4 Live
+            </h3>
+            <p className="mt-2 text-white/60">
+              Upload an image and remove its background instantly—all processing
+              happens in your browser using WebGPU acceleration.
+            </p>
+          </div>
+
+          <ModelTryPanel />
         </section>
 
         {/* Feature Highlights */}
@@ -298,8 +331,8 @@ export default function Home() {
             </div>
             <h4 className="mb-2 text-lg font-bold text-white">Privacy First</h4>
             <p className="text-sm text-white/60">
-              Your data never leaves your device. All processing happens locally
-              with zero data sent to servers.
+              Your images never leave your device. All processing happens
+              locally with zero data sent to servers.
             </p>
           </div>
 
@@ -355,6 +388,12 @@ export default function Home() {
                 className="text-white/50 transition hover:text-yellow-400"
               >
                 Transformers.js
+              </a>
+              <a
+                href="https://bria.ai"
+                className="text-white/50 transition hover:text-yellow-400"
+              >
+                BRIA AI
               </a>
             </div>
           </div>

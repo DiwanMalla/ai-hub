@@ -298,8 +298,8 @@ export default function Home() {
             </div>
             <h4 className="mb-2 text-lg font-bold text-white">Privacy First</h4>
             <p className="text-sm text-white/60">
-              Your data never leaves your device. All processing happens locally
-              with zero data sent to servers.
+              Your data never leaves your device. All processing happens
+              locally with zero data sent to servers.
             </p>
           </div>
 

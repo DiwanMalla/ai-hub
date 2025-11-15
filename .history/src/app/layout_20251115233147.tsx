@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "AI Model Collections | Hugging Face Explorer",
   description:
     "Curate, document, and try AI models such as briaai/RMBG-1.4 directly from a Next.js showcase.",
+  metadataBase: new URL("https://example.com"),
   openGraph: {
     title: "AI Model Collections",
     description:
